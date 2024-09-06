@@ -1,94 +1,99 @@
-<script setup>
-</script>
 <template>
-    <div class="general-container">
-        <div class="general-container-nav">
-            <div class="general-container-nav-image">
-                <img src="https://picsum.photos/200" alt="">
-            </div>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-            <button>logut</button>
-        </div>
-        <div class="general-container-table">
-            <h1>title porject</h1>
-            <div class="general-container-table-board">
-                <p>title board</p>
-                <div class="task-container">
-                    <p class="task-container-title">Title task</p>
-                    <div class="task-container-items">
-                        <p class="task-container-items-id">id</p>
-                        <button class="task-container-items-btn">low</button>
-                    </div>
-                </div>
-             </div>
-        </div>
+  <div class="task-container">
+    <p class="task-container-title">{{ item.title }}</p>
+    <div class="task-container-items">
+      <div class="task-container-items-id"> <span>id: </span> {{ item.id }}</div>
+      <div class="task-container-items-priority"> {{ item.priority }}</div>
     </div>
-    
-    
+    <!-- <div class="button-container">
+        <button @click="emitDelete">Eliminar</button>
+        <button @click="emitEdit">edit</button>
+      </div> -->
+  </div>
+  <!-- <div v-model="showModal"></div> -->
 </template>
 
-<style lang="scss">
+<script setup>
+import { defineProps, defineEmits } from 'vue';
 
-.general-container{
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--color-white);
-    padding: 12px;
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
+  },
+  boardId: { // Identificador del proyecto/tablero
+    type: String,
+    required: true
+  }
+});
 
-}
+let showModal = ref(false); 
+const emit = defineEmits(['delete-task', 'update-task']); // Definir los eventos que se emitirán
 
-.general-container-nav {
-    background-color: var(--color-blue);
-    width: 150px;
-    display: flex;
-    /* height: 90vh; */
-    height: 100vh;
-    max-height: 640px;
+const emitDelete = () => {
+  emit('delete-task', { boardId: props.boardId, taskId: props.item.id });
+};
 
-    /* border: 1px solid tomato; */
-    border-radius: 12px;
-    display: flex;
-    gap:1rem;
-    flex-direction: column;
-}
-
-.general-container-nav-image {
-    max-width: 100px;
-    margin-bottom: 12px;
-    border-radius: 50%;
-}
-
-.general-container-nav-image img {
-   border-radius: 100%;
-    width: 100%;
-}
-
-.general-container-table {
-    border:1px solid tomato;
-    width: 100vw;
-    max-width: 1150px;
-    padding: 12px;
-    margin: 12px;
+const emitEdit = () => {
 
 }
 
-.general-container-table-board {
-    border:1px solid;
-    width: 30%;
-}
+// Similarmente, puedes definir funciones para emitir actualizaciones
+</script>
 
+
+<style lang="scss" scoped>
 .task-container {
-    background-color: var(--color-azulito);
-    width: 100%;
-    max-width: 250px;
-    border-radius: 12px;
-    padding: 12px;
+  background-color: var(--color-azulito);
+  width: 100%;
+  max-width: 450px;
+  height: 150px;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 2rem auto;
+  box-shadow: 0 0 10px rgba(210, 207, 207, 0.327);
+  color: white;
+  cursor: pointer;
+
+  // &:hover {
+  //   background-color: lightblue;
+  // }
+
+  // &:active {
+  //   background-color: darkblue;
+  // }
+  .task-container-title {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.655);
+    text-align: start
+  }
+
+  .task-container-items {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4rem;
+    align-items: center;
+
+    .task-container-items-priority {
+      background-color: #FE654F;
+      border-radius: 8px;
+      padding: 0 17px;
+      color: black;
+      font-size: 17px;
+    }
+
+    .task-container-items-id {
+      font-size: 17px;
+      color: rgba(175, 170, 170, 0.655);
+    }
+
+    .task-container-items-priority {
+      background-color: #FE654F;
+      border-radius: 8px;
+      padding: 0 17px;
+      color: black;
+      font-size: 17px;
+    }
+  }
 }
 </style>

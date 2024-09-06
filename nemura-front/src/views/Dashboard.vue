@@ -1,16 +1,14 @@
 <script setup>
+import Boards from '@/components/Boards.vue';
 import Navbar from '@/components/Navbar.vue';
 </script>
 
-<template>
-  <main class="dashboard">
-    <Navbar />
-    <div class="dashboard-table">
-      <h1>This is an dashboard page</h1>
-    </div>
-  </main>
+<template lang="pug">
+main.dashboard
+  Navbar
+  div this page is empy, please select 
+     
+     
 </template>
 
-<style lang="scss">
 
-</style>
