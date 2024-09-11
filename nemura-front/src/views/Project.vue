@@ -27,7 +27,9 @@ import InputNew from "./InputNew.vue";
           title: "probando ando",
           description: "lorem pic",
           status: "do to",
-          priority: "low"
+          priority: "low",
+          idProject: 1,
+          idUser:1
         },
         {
           id: 2,
@@ -75,6 +77,7 @@ import InputNew from "./InputNew.vue";
 
   function deleteItem(board, item) {
     board.items = board.items.filter((i) => i !== item);
+    //enviar al back para eliminar
   }
 
   //-   // function updateItem({ boardId, task }) {
@@ -124,22 +127,36 @@ import InputNew from "./InputNew.vue";
   width: 100%;
   text-align: center;
   .board-container {
+    // border: 1px solid tomato;
     display: flex;
-    margin: 1rem 0;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    position: relative;
+    margin: 0 2.5rem;
+  
     .board {
       color: rgba(255, 255, 255, 0.893);
+      // color: black;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.735);
       width: 30%;
+      min-width: 300px;
       min-height: 35vh;
       max-height: 85vh;
       height: 100%;
       border-radius: 12px;
       background-color: var(--color-blue);
-      padding: 2rem;
+      // background-color: #F2F3F5;
+      padding: 1rem;
       font-size: 2rem;
       overflow: auto;
+      
     }
+  
+    @media (max-width: 768px) {
+    margin: 0 0 0 4rem;
+    justify-content: center;
+  }
   }
 }
 

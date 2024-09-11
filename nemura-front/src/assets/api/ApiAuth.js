@@ -3,7 +3,7 @@ import { httpService } from "@/libs/https";
 
 const { httpPost } = httpService();
 
-const apiUrl = "api/Auth/"; // como van a ser los endopints
+const apiUrl = "api/nemura/v/auth/"; // como van a ser los endopints
 
 export function authRegisterApi() {
   

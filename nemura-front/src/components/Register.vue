@@ -79,7 +79,7 @@ const form = ref({
     lastName: "",
     password: "",
     email: "",
-});
+  });
 
 const useUser = useUserStore();
 const passConfirm = ref("");
@@ -166,7 +166,7 @@ const validate = async () => {
         // border: 1px solid black;
         background-color: #fff;
         border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 10px rgba(8, 8, 8, 0.432);
         width: 100%;
         max-width: 450px;
         
