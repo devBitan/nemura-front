@@ -1,12 +1,3 @@
-<!-- <template>
-    <div class="login-seccion">
-        <form @submit.prevent="handleSubmit">
-            <h3>{{counterStore.count}}x2 ={{ counterStore.times2 }}</h3>
-            <button @click="counterStore.increment(2)">increment</button>
-             div(@click="$router.back()") back
-        </form>
-    </div>
-</template> -->
 <template lang="pug">
 .login-seccion
   form(
@@ -159,7 +150,8 @@ const validate = async () => {
     width: 100vw;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;      
+    background-color: var(--color-blue);
 
 
     form {
@@ -195,6 +187,9 @@ const validate = async () => {
             cursor: pointer;
             margin: 0 auto;
         }
+        strong {
+                cursor: pointer;
+            }
     }
 
 }

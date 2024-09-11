@@ -23,7 +23,7 @@ import Task from '@/components/Task.vue';
   justify-content: center;
 
   .login-image {
-    background-color: #F2F3F5;
+    background-color: var(--color-white-soft);
     display: flex;
     justify-content: center;
     align-items: center;

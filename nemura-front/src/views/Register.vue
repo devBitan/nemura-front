@@ -10,8 +10,8 @@ import Task from '@/components/Task.vue';
   <main class="login">
     <Register />
     <div class="login-image">
-      <h2>Nemura</h2>
       <img src="../assets/img/logoNemura.png" alt="logo-Nemura">
+      <h2>Nemura</h2>
     </div>
   </main>
 </template>
@@ -23,7 +23,7 @@ import Task from '@/components/Task.vue';
   justify-content: center;
 
   .login-image {
-    background-color: #F2F3F5;
+    background-color: var(--color-white-soft);
     display: flex;
     justify-content: center;
     align-items: center;
