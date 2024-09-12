@@ -2,63 +2,46 @@
 main.dashboard
   Navbar
   .dashboard-table
-    h3.title  Title project
+    h3.title  {{nameProject}}
     .board-container
       div.board(@drop="onDrop($event, board)" @dragover.prevent @dragenter.prevent v-for="board in boards" :key="board.id")
         div {{ board.name }}
         InputNew(@on-new-item="(text) => handleNewItem(text, board)")
-        .item(draggable="true" @dragstart="startDrag($event, board, item)" v-for="item in board.items" :key="item.id")
+        .item(draggable="true" @dragstart="startDrag($event, board, item)" v-for="item in assignments" :key="item.id")
           Task(:item="item" :boardId="board.id" @delete-task="deleteItem(board, item)" @update-task="updateItem(board, item)")
 
 </template>
 <script setup>
-import { reactive } from "vue";
+import { onMounted, reactive, ref, watchEffect } from "vue";
 import Navbar from '@/components/Navbar.vue';
 import Task from '@/components/Task.vue';
 import InputNew from "./InputNew.vue";
+import { assignmentApi } from "@/assets/api/ApiAssigment";
+import { useUserStore } from "@/stores/user";
 
-  let boards = reactive([
+const userStore = useUserStore();
+const {getAssignment, postAssignment, putAssignment, deleteAssignment} = assignmentApi();
+//al put me pide un id
+
+onMounted(async ()=> {
+  let responseAssignment = await getAssignment();
+  assignments.value= responseAssignment;
+  idProject = userStore.idProject;
+  nameProject = userStore.nameProject;
+  console.log(idProject)
+  // console.log(responseAssignment);
+})
+let nameProject= ref('')
+let idProject=ref();
+const assignments = ref([]);
+console.log(assignments)
+
+let boards = reactive([
     {
       id: 1,
-      name: "Board ToDo´s",
+      name: "To Dos",
       items: [
-        {
-          id: 1,
-          title: "probando ando",
-          description: "lorem pic",
-          status: "do to",
-          priority: "low",
-          idProject: 1,
-          idUser:1
-        },
-        {
-          id: 2,
-          title: "ASP .NET",
-          description: "lorem pic",
-          status: "do to",
-          priority: "low"
-        },
-        {
-          id: 3,
-          title: "Api Rest",
-          description: "lorem pic",
-          status: "do to",
-          priority: "low"
-        },
-        {
-          id: 4,
-          title: "Azure devops",
-          description: "lorem pic",
-          status: "do to",
-          priority: "low"
-        },
-        {
-          id: 5,
-          title: "Git flow",
-          description: "lorem pic",
-          status: "do to",
-          priority: "low"
-        },
+        
       ],
     },
     {
@@ -93,6 +76,7 @@ import InputNew from "./InputNew.vue";
 
 
   function handleNewItem(text, board) {
+    //mirar como creo en la base de datos la task
     board.items.push({
       id: crypto.randomUUID(),
       priority:"low",
@@ -116,7 +100,6 @@ import InputNew from "./InputNew.vue";
     dest.items.push({ ...originItem });
     originBoard.items = originBoard.items.filter((item) => item != originItem);
   }
-  // PENDIENTE CREAR FUNCIONAIDAD DE ENVIDAR LOS ELIMINADOS A UNA LISTA  - QUE SE VEA COMO UN HISTORIAL
   </script>
 
 

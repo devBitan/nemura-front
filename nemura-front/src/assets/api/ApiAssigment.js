@@ -1,13 +1,14 @@
 import { httpService } from "@/libs/https";
 
-const {httpGet, httpPost } = httpService();
+const {httpGet, httpPost, httpDelete, httpPut } = httpService();
 
-const apiUrl = "api/Catalogue/";
+// const apiUrl = "api/Catalogue/";
+const apiUrl = "/";
 
 export function assignmentApi() {
 
   async function getAssignment() {
-    let response = await httpGet(apiUrl + "getassignment");
+    let response = await httpGet(apiUrl + "assignments");
     return response;
   }
 

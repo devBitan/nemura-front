@@ -5,14 +5,15 @@ export const useUserStore = defineStore("user", {
     return {
       user: {
         id: 0,
-        nickName: "",
-        firstName: "",
+        name: "",
         lastName: "",
-        password:"",
         email: "",
+        nickName: "",
+        password: ""
       },
-      project:[],
-      task:[]
+      idProject:0,
+      nameProject:"",
+      isExpanded:false,
     };
   },
   actions: {
@@ -22,6 +23,29 @@ export const useUserStore = defineStore("user", {
     
     setUser(user) {
       this.user = user;
+    },
+
+    async getProject() {
+      return this.idProject;
+    },
+    
+    setProject(idProject) {
+      this.idProject = idProject;
+    },
+    async getNameProject() {
+      return this.idProject;
+    },
+    
+    setNameProject(idProject) {
+      this.idProject = idProject;
+    },
+
+    async getExpanded() {
+      return this.nameProject;
+    },
+    
+    setExpanded(nameProject) {
+      this.nameProject = nameProject;
     },
   },
   persist: true

@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <textarea name="" id="" placeholder="escribe " class="modal-container-textarea"></textarea>
+      <textarea name="" id="" placeholder="escribe " class="modal-container-textarea" v-model="selectedAssignment.description"></textarea>
       <div class="modal-container-btns">
         <button @click="changeModal()" class="close">Close</button>
         <button type="submit" class="save">Save</button>
@@ -65,7 +65,7 @@ const emitDelete = () => {
   emit('delete-task', { boardId: props.boardId, taskId: props.item.id });
 };
 
-const emitEdit = () => {
+const emitUpdate = () => {
   emit('update-task', { boardId: props.boardId, taskId: props.item.id });
 }
 const selectedAssignment = ref({
@@ -86,7 +86,6 @@ const editSelectedAssignment = (assignment) => {
     status: assignment.status,
     priority: assignment.priority,
     idProject: assignment.idProject,
-    idUser: assignment.idUser
   };
   showModal.value = true;
   console.log(selectedAssignment.value)
@@ -205,7 +204,7 @@ const saveEditAssignment = async () => {
     .modal-container-title {
       text-align: start;
       input {
-        padding: 5px;
+        padding: 7px;
         border-radius: 9px;
         border: none;
       }

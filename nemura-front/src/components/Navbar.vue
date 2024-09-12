@@ -1,7 +1,7 @@
 <template>
-    <aside :class="`${isExpanded && 'is-expanded'}`">
-        <div class="logo">
-            <img src="../assets/img/logoNemura.png" alt="">
+    <aside :class="{'is-expanded': userStore.isExpanded}">
+        <div class="logo" >
+            <img src="../assets/img/logoNemura.png" alt="" @click="$router.push({ path: '/dashboard' })">
         </div>
         <div class="menu-toggle-wrap">
             <div class="menu-toggle" @click="ToggleMenu">
@@ -10,68 +10,90 @@
 
         </div>
         <h3>Menu</h3>
-        <div class="menu" v-for="project in objetoProjectos" :key="project.name">
-
-            <router-link class="button">
-                <span class="material-icons" @click="goProject(project.name)">home</span>
-                <span class="text">{{ project.name }}</span>
-            </router-link>
+        <div class="menu" v-for="project in projects" :key="project.name">
+            <div class="button" @click="projectSelected(project.id, project.name)" >
+                <span class="material-icons">home</span>
+                <span class="text" >{{ project.name }}</span>
+            </div>
 
         </div>
         <div class="flex"></div>
         <div class="menu">
-            <router-link class="button" >
-                <span class="material-icons" @click="$router.push({ path: '/' })"  >logout</span>
-                <span class="text">Logout</span>
+            <div class="button">
+                <span class="material-icons" @click="logout"  >logout</span>
+                <span class="text"> Logout</span>
                 
-            </router-link>
+            </div>
         </div>
     </aside>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from "vue-router";
+import { projectsApi } from '@/assets/api/ApiProject';
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore()
 const router = useRouter();
 const route = useRoute();
-let project = "riwi"
 
-const objetoProjectos = [
-    {
-        name: "Riwi",
-        id:1,
-        logo: "../assets/img/logo.png",
-        color: "#2196F3",
-    },
-    {
-        name: "CodigoR",
-        id:2,
-        logo: "../assets/img/logo.png",
-        color: "#2196F3",
-    },
-    {
-        name: "CoWorkig",
-        id:3,
-        logo: "../assets/img/logo.png",
-        color: "#2196F3",
-    },
-    {
-        name: "Gamificacion",
-        id:4,
-        logo: "../assets/img/logo.png",
-        color: "#2196F3",
-    },
-]
+const { getProject, postProject, putProject, deleteProject } = projectsApi();
 
-const isExpanded = ref(localStorage.getItem("is_expanded") === "true");
+onMounted(async () => {
+  // let responseProjects = await getProject();
+  // idUser = userStore.user.id;
+  // projects.value = responseProjects;
+  // console.log(projects)
+  // console.log(idUser)
+  // let data = userStore.user;
+  // console.log(data)
+  let responseProjects = await getProject();
+  const { id } = userStore.user; // Destructure user ID
+  projects.value = responseProjects;
+  console.log(projects)
+  console.log(id)
+})
+
+let idUser= ref();
+const projects = ref([])
+// console.log(projects)
+// console.log(idUser)
+
+// const isExpanded = ref(localStorage.getItem("is_expanded") === "true");
+
+// const ToggleMenu = () => {
+//     isExpanded.value =!isExpanded.value;
+//     localStorage.setItem("is_expanded", isExpanded.value);
+// }
+
+
+// const isExpanded = ref(localStorage.getItem("is_expanded") === "true");
 
 const ToggleMenu = () => {
-    isExpanded.value =!isExpanded.value;
-    localStorage.setItem("is_expanded", isExpanded.value);
+  userStore.isExpanded = !userStore.isExpanded;
 }
 
-const goProject = (project) => {
-    router.push({ path: "/dashboard/" + `${project}` });
+const projectSelected = (id, name) => {
+  // console.log(id)
+  router.push({ path: "/dashboard/" + `${name}` });
+  userStore.idProject = id;
+  userStore.nameProject=name;
+  console.log(userStore.idProject)
+  console.log(userStore.nameProject)
+
 }
+
+// const goProject = (project) => {
+//     router.push({ path: "/dashboard/" + `${project}` });
+// }
+
+
+const logout = async () => {
+    console.log(userStore.user)
+    userStore.user = null;
+    console.log(userStore.user)
+    location.replace("/");
+};
 </script>
 
 <<style lang="scss" scoped>

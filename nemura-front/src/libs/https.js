@@ -15,7 +15,8 @@ import axios from "axios";
 // MANDAR Y RECIBIR HTTTP REQUESTS
 export function httpService() {
   let http = axios.create({
-    baseURL: import.meta.env.BASE_URL,
+    // baseURL: import.meta.env.BASE_URL,
+    baseURL: "http://localhost:3000",
   });
 
   // async function hasCookie() {
@@ -72,6 +73,16 @@ export function httpService() {
     return response.data;
   };
 
+  const httpDelete = async (url, data) => {
+    let response = await http.delete(url, data);
+    return response.data;
+  };
+
+  const httpPut = async (url, data) => {
+    let response = await http.put(url, data);
+    return response.data;
+  };
+
   // const httpGetHeaders = async (url) => {
   //   let headers = {
   //     Authorization: `Bearer ${Cookies.get("token_bikini")}`,
@@ -107,6 +118,8 @@ export function httpService() {
   return {
     httpGet,
     httpPost,
+    httpDelete,
+    httpPut
     // httpGetHeaders,
     // httpPostHeaders,
     // httpPutHeaders,

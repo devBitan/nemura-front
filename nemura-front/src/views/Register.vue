@@ -34,6 +34,17 @@ import Task from '@/components/Task.vue';
       max-width: 350px;
     }
   }
+  @media (max-width: 768px) {
+    flex-direction: column;
+   .login-image {
+    width: 10vh;
+    height: 30vh;
+    img {
+      max-width: 130px;
+      margin-left: 15rem;
+    };
+   }
+  }
 
 }
 </style>

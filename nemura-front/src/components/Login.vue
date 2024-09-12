@@ -41,22 +41,14 @@
     import { useRouter } from "vue-router";
     
     const userStore = useUserStore(); // generar constante para usarlo
-    const counterStore = useCounterStore();
     const { login } = authRegisterApi();
     const router = useRouter();
     
-    const form = ref({
-        nickName: "",
-        Password: "",
-    });
-
     let userConfirm = ref({
         nickName: "",
         password:"",
     });
     
-    
-    const useUser = useUserStore();
     const passConfirm = ref("");
     const passValidate = ref(false);
     
@@ -72,6 +64,7 @@
       }
     };
     
+
     // confirmando contraseña
     const ConfirmPass = () => {
       if (passConfirm.value == userConfirm.value.password) {
@@ -85,9 +78,35 @@
         return;
       }
     };
-  let prueba = true
     
-   const validate = async () => {
+  // const validate = async () => {
+  // if (
+  //   (userConfirm.value.nickName != "root" &&
+  //     (userConfirm.value.nickName == "" ||
+  //       userConfirm.value.nickName.length < 5)) ||
+  //   userConfirm.value.password == "" ||
+  //   userConfirm.value.password.length < 8
+  // ) {
+  //   alert("usuario o pass incorrecto.");
+  //   userConfirm.value.nickName = "";
+  //   userConfirm.value.password = "";
+  //   return;
+  // } else {
+  //   // enviando información a la store
+  //   let response = await login(userConfirm.value);
+  //   if (response) {
+  //   //   $q.cookies.set("token_nemura", response.token, { expires: "90d" }); enviar el token al local storage
+  //     useUser.setUser(response);
+  //     // router.push("/");
+  //     router.push("/dasboard");
+  //     location.replace("/dashboard");
+  //   } else {
+  //     alert("usuario o pass incorrecto.");
+  //     userConfirm.value.nickName = "";
+  //     userConfirm.value.password = "";
+  //   }
+  // }
+  const validate = async () => {
   if (
     (userConfirm.value.nickName != "root" &&
       (userConfirm.value.nickName == "" ||
@@ -101,14 +120,21 @@
     return;
   } else {
     // enviando información a la store
-    let response = await login(userConfirm.value);
-    if (response.access) {
-   
+    // let response = await login(userConfirm.value);
+    let logeo = {
+        id: 1,
+        name: "javier",
+        lastName: "combita",
+        email: "javier@gmail.com",
+        nickName: "combita",
+        password: "Colombia1*"
+    }
+    if (logeo) {
     //   $q.cookies.set("token_nemura", response.token, { expires: "90d" }); enviar el token al local storage
-      useUser.setUser(response);
+      userStore.setUser(logeo);
       // router.push("/");
-      router.push("/dasboard");
-      location.replace("/dashboard");
+      router.push("/dashboard");
+      // location.replace("/dashboard");
     } else {
       alert("usuario o pass incorrecto.");
       userConfirm.value.nickName = "";
