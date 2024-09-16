@@ -6,27 +6,27 @@
     h3 Register
     input(
         type="text",
-        v-model="userCreate.firstName",
+        v-model="userCreate.name",
         placeholder="Your Name"
     )
     input(
         type="text",
         placeholder="your last name",
         v-model="userCreate.lastName",
-        v-show="userCreate.firstName != '' && userCreate.firstName.length > 8",
+        v-show="userCreate.name != '' && userCreate.name.length > 4",
     )
     input(
         type="email",
         placeholder="your email",
         v-model="userCreate.email", 
-        v-show="userCreate.lastName != '' && userCreate.lastName.length > 8",
+        v-show="userCreate.lastName != '' && userCreate.lastName.length > 4",
         @change="checkEmail",
     )
     input(
         type="text",
         placeholder="Nickname",
         v-model="userCreate.nickName",
-        v-show="userCreate.email != '' && userCreate.email.length > 8",
+        v-show="userCreate.email != '' && userCreate.email.length > 4",
     )
     input(
         type="password",
@@ -54,31 +54,19 @@
 <script setup>
 import { onMounted, ref, watchEffect } from "vue";
 import { useUserStore } from '@/stores/user'; //importar el store
-import { useCounterStore } from '@/stores/counter'; //importar el store prueba
 import { EMAIL_REGEX, PASSWORD_REGEX } from '@/libs/regex';
 import { authRegisterApi } from '@/assets/api/ApiAuth';
 import { useRouter } from "vue-router";
 
 const userStore = useUserStore(); // generar constante para usarlo
-const counterStore = useCounterStore();
 const {register} = authRegisterApi();
 
-const form = ref({
-    id: 0,
-    nickName: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-    email: "",
-  });
-
-const useUser = useUserStore();
 const passConfirm = ref("");
 const passValidate = ref(false);
-
+const router = useRouter();
 let userCreate = ref({
     nickName: "",
-    firstName: "",
+    name: "",
     lastName: "",
     password:"",
     email: "",
@@ -87,7 +75,7 @@ let userCreate = ref({
 // validando contraseña
 const checkPassword = () => {
   if (!PASSWORD_REGEX.test(userCreate.value.password)) {
-    alter(
+    alert(
       "the password must contain at least one capital letter, one number and one special character '(?=.*d)')"
     );
     userCreate.value.password = "";
@@ -99,7 +87,7 @@ const checkPassword = () => {
 const ConfirmPass = () => {
   if (passConfirm.value == userCreate.value.password) {
     passValidate.value = true;
-    alter("Passwords do match");
+    alert("Passwords do match");
     return;
   } else {
     passValidate.value = false;
@@ -129,11 +117,12 @@ const validate = async () => {
     return;
   }
     let response = await register(userCreate.value);
+    console.log(response)
     if (response) {
       alert("User created!");
       router.push("/");
     } else {
-      userCreate.value.firstName = "";
+      userCreate.value.name = "";
       userCreate.value.lastName = "";
       userCreate.value.email = "";
       userCreate.value.nickName = "";

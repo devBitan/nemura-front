@@ -3,7 +3,7 @@ import { httpService } from "@/libs/https";
 
 const { httpPost } = httpService();
 
-const apiUrl = "api/nemura/v/auth/"; // como van a ser los endopints
+const apiUrl = "v1/users/"; // como van a ser los endopints
 
 export function authRegisterApi() {
   
@@ -12,9 +12,10 @@ export function authRegisterApi() {
     return response;
   };
 
+  
   const login = async (userConfirm) => {
-    let response = await httpPost(apiUrl + "login", userConfirm);
-    return response;
+    let response = await httpPost(apiUrl + "Login", userConfirm);
+    return response.data;
   };
   // const availableEmail = async (userCreate) => {
   //   let data = {

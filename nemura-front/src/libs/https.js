@@ -16,7 +16,7 @@ import axios from "axios";
 export function httpService() {
   let http = axios.create({
     // baseURL: import.meta.env.BASE_URL,
-    baseURL: "http://localhost:3000",
+    baseURL: "https://nemura.azurewebsites.net/api/",
   });
 
   // async function hasCookie() {

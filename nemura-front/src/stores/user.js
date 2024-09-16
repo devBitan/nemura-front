@@ -9,11 +9,13 @@ export const useUserStore = defineStore("user", {
         lastName: "",
         email: "",
         nickName: "",
-        password: ""
+        password: "",
+        token:""
       },
       idProject:0,
       nameProject:"",
       isExpanded:false,
+      isToken:""
     };
   },
   actions: {
@@ -33,19 +35,26 @@ export const useUserStore = defineStore("user", {
       this.idProject = idProject;
     },
     async getNameProject() {
-      return this.idProject;
-    },
-    
-    setNameProject(idProject) {
-      this.idProject = idProject;
-    },
-
-    async getExpanded() {
       return this.nameProject;
     },
     
-    setExpanded(nameProject) {
+    setNameProject(nameProject) {
       this.nameProject = nameProject;
+    },
+
+    async getExpanded() {
+      return this.isExpanded;
+    },
+    
+    setExpanded(isExpanded) {
+      this.isExpanded = isExpanded;
+    },
+    async getToken() {
+      return this.isToken;
+    },
+    
+    setToken(isToken) {
+      this.isToken = isToken;
     },
   },
   persist: true

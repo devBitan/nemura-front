@@ -9,7 +9,7 @@ main.dashboard
         InputNew(@on-new-item="(text) => handleNewItem(text, board)")
         .item(draggable="true" @dragstart="startDrag($event, board, item)" v-for="item in assignments" :key="item.id")
           Task(:item="item" :boardId="board.id" @delete-task="deleteItem(board, item)" @update-task="updateItem(board, item)")
-
+main
 </template>
 <script setup>
 import { onMounted, reactive, ref, watchEffect } from "vue";

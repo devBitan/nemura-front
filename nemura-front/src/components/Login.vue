@@ -11,7 +11,7 @@
       )
       input(
           type="password",
-          placeholder="your pasword",
+          placeholder="your pasword -One capital letter, one number",
           v-model="userConfirm.password",
           v-show="userConfirm.nickName != '' && userConfirm.nickName.length >= 5",
           @change="checkPassword",
@@ -33,10 +33,9 @@
 </template>
     
     <script setup>
-    import { onMounted, ref, watchEffect } from "vue";
+    import { ref } from "vue";
     import { useUserStore } from '@/stores/user'; //importar el store
-    import { useCounterStore } from '@/stores/counter'; //importar el store prueba
-    import { EMAIL_REGEX, PASSWORD_REGEX } from '@/libs/regex';
+    import { PASSWORD_REGEX } from '@/libs/regex';
     import { authRegisterApi } from '@/assets/api/ApiAuth';
     import { useRouter } from "vue-router";
     
@@ -59,7 +58,7 @@
         alert(
           "the password must contain at least one capital letter, one number and one special character '(?=.*d)')"
         );
-        userCreate.value.password = "";
+        userConfirm.value.password = "";
         return;
       }
     };
@@ -79,33 +78,6 @@
       }
     };
     
-  // const validate = async () => {
-  // if (
-  //   (userConfirm.value.nickName != "root" &&
-  //     (userConfirm.value.nickName == "" ||
-  //       userConfirm.value.nickName.length < 5)) ||
-  //   userConfirm.value.password == "" ||
-  //   userConfirm.value.password.length < 8
-  // ) {
-  //   alert("usuario o pass incorrecto.");
-  //   userConfirm.value.nickName = "";
-  //   userConfirm.value.password = "";
-  //   return;
-  // } else {
-  //   // enviando información a la store
-  //   let response = await login(userConfirm.value);
-  //   if (response) {
-  //   //   $q.cookies.set("token_nemura", response.token, { expires: "90d" }); enviar el token al local storage
-  //     useUser.setUser(response);
-  //     // router.push("/");
-  //     router.push("/dasboard");
-  //     location.replace("/dashboard");
-  //   } else {
-  //     alert("usuario o pass incorrecto.");
-  //     userConfirm.value.nickName = "";
-  //     userConfirm.value.password = "";
-  //   }
-  // }
   const validate = async () => {
   if (
     (userConfirm.value.nickName != "root" &&
@@ -119,22 +91,15 @@
     userConfirm.value.password = "";
     return;
   } else {
+    let response = await login(userConfirm.value);
+    console.log(response);
+    if (response) {
+      //   $q.cookies.set("token_nemura", response.token, { expires: "90d" }); enviar el token al local storage
     // enviando información a la store
-    // let response = await login(userConfirm.value);
-    let logeo = {
-        id: 1,
-        name: "javier",
-        lastName: "combita",
-        email: "javier@gmail.com",
-        nickName: "combita",
-        password: "Colombia1*"
-    }
-    if (logeo) {
-    //   $q.cookies.set("token_nemura", response.token, { expires: "90d" }); enviar el token al local storage
-      userStore.setUser(logeo);
-      // router.push("/");
-      router.push("/dashboard");
-      // location.replace("/dashboard");
+    userStore.setUser(response);
+    userStore.setToken(response.token)
+    console.log(response)
+    router.push("/dashboard");
     } else {
       alert("usuario o pass incorrecto.");
       userConfirm.value.nickName = "";
@@ -142,9 +107,10 @@
     }
   }
 };
-    </script>
+
+</script>
     
-    <style lang="scss" scoped>
+<style lang="scss" scoped>
     .login-seccion {
         //  display: flex;
         width: 100vw;
@@ -187,4 +153,4 @@
             }
         }
     }
-    </style>
+</style>
