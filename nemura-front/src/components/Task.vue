@@ -1,9 +1,9 @@
 <template>
   <div class="task-container" @click="editSelectedAssignment(item)">
-    <p class="task-container-title">{{ item.title }}</p>
+    <p class="task-container-title">{{ item?.name }}</p>
     <div class="task-container-items">
-      <div class="task-container-items-id"> <span>id: </span> {{ item.id }}</div>
-      <div class="task-container-items-priority"> {{ item.priority }}</div>
+      <div class="task-container-items-id"> <span>id: </span> {{ item?.id }}</div>
+      <div class="task-container-items-priority"> {{ item?.priority }}</div>
     </div>
   </div>
   <div class="modal" v-if="showModal">
@@ -11,7 +11,7 @@
       <div class="modal-container" >
         <div class="modal-container-title">
           <!-- <h3>{{ item.title }}</h3> -->
-           <input type="text" v-model="selectedAssignment.title">
+           <input type="text" v-model="selectedAssignment.name">
           <p>id: {{ item.id }}</p>
         </div>
         <div class="modal-container-priority">
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <textarea name="" id="" placeholder="escribe " class="modal-container-textarea" v-model="selectedAssignment.description"></textarea>
+      <textarea placeholder="escribe " class="modal-container-textarea" v-model="selectedAssignment.description"></textarea>
       <div class="modal-container-btns">
         <button @click="changeModal()" class="close">Close</button>
         <button type="submit" class="save">Save</button>
@@ -46,7 +46,7 @@ const props = defineProps({
     required: true
   },
   boardId: { // Identificador del proyecto/tablero
-    type: String,
+    type: Number,
     required: true
   }
 });
@@ -70,7 +70,7 @@ const emitUpdate = () => {
 }
 const selectedAssignment = ref({
   id: "",
-  title: "",
+  name: "",
   description: "",
   status: "",
   priority: "",
@@ -81,7 +81,7 @@ const selectedAssignment = ref({
 const editSelectedAssignment = (assignment) => {
   selectedAssignment.value = {
     id: assignment.id,
-    title: assignment.title,
+    name: assignment.name,
     description: assignment.description,
     status: assignment.status,
     priority: assignment.priority,

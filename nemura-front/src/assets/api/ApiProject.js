@@ -1,15 +1,21 @@
 import { httpService } from "@/libs/https";
 
-const {httpGet, httpPost, httpDelete, httpPut } = httpService();
+const {httpGet, httpPost, httpDelete, httpPut, httpGetHeaders } = httpService();
 
 // const apiUrl = "api/Catalogue/";
-const apiUrl = "/";
+const apiUrl = "v1/";
 
 export function projectsApi() {
 
   async function getProject() {
     let response = await httpGet(apiUrl + "projects");
     console.log(response)
+    return response;
+  }
+
+  async function getProjectsByIdUser(id) {
+    let response = await httpGetHeaders(apiUrl + "projects/ByUserId/"+ id);
+   
     return response;
   }
 
@@ -28,5 +34,5 @@ export function projectsApi() {
     // return response;
   };
 
-  return { getProject, postProject, putProject, deleteProject };
+  return { getProject, postProject, putProject, deleteProject, getProjectsByIdUser };
 }

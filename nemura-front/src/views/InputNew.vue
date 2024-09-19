@@ -14,5 +14,5 @@ function handleSubmit() {
 
 <template lang="pug">
 form(action="" @submit.prevent="handleSubmit") 
-    input.input(type="text" v-model="text" placeholder="write something")
+    input.input(type="text" v-model="text" placeholder="Write new task")
 </template>

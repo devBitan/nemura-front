@@ -2,17 +2,19 @@
 main.dashboard
   Navbar
   .dashboard-table
-    h3.title  {{nameProject}}
+    h3.title {{nameProject}}
     .board-container
       div.board(@drop="onDrop($event, board)" @dragover.prevent @dragenter.prevent v-for="board in boards" :key="board.id")
         div {{ board.name }}
-        InputNew(@on-new-item="(text) => handleNewItem(text, board)")
-        .item(draggable="true" @dragstart="startDrag($event, board, item)" v-for="item in assignments" :key="item.id")
+        InputNew(@on-new-item="(text) => handleNewItem(text)")
+        .item(draggable="true" @dragstart="startDrag($event, board, item)" 
+          v-for="item in filteredAssignments(board)" 
+          :key="item?.id")
           Task(:item="item" :boardId="board.id" @delete-task="deleteItem(board, item)" @update-task="updateItem(board, item)")
-main
 </template>
+
 <script setup>
-import { onMounted, reactive, ref, watchEffect } from "vue";
+import { onMounted, reactive, ref, watchEffect, computed, onUpdated } from "vue";
 import Navbar from '@/components/Navbar.vue';
 import Task from '@/components/Task.vue';
 import InputNew from "./InputNew.vue";
@@ -20,95 +22,98 @@ import { assignmentApi } from "@/assets/api/ApiAssigment";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
-const {getAssignment, postAssignment, putAssignment, deleteAssignment} = assignmentApi();
-//al put me pide un id
-
-onMounted(async ()=> {
-  let responseAssignment = await getAssignment();
-  assignments.value= responseAssignment;
-  idProject = userStore.idProject;
-  nameProject = userStore.nameProject;
-  console.log(idProject)
-  // console.log(responseAssignment);
-})
-let nameProject= ref('')
-let idProject=ref();
-const assignments = ref([]);
-console.log(assignments)
-
+const { getAssignment, postAssignment, putAssignment, deleteAssignment, getAssignmentByProjectId } = assignmentApi();
+const idProject = computed(() => userStore.idProject);
+const nameProject = computed(() => userStore.nameProject);
+let assignments = ref([]);
 let boards = reactive([
-    {
-      id: 1,
-      name: "To Dos",
-      items: [
-        
-      ],
-    },
-    {
-      id: 2,
-      name: "In progres",
-      items: [
-      ],
-    },
-    {
-      id: 3,
-      name: "Complete",
-      items: [
-      ],
-    },
-  ]);
+  {
+    id: 1,
+    name: "To Dos",
+    enumValue: 0,
+    items: [
+    ],
+  },
+  {
+    id: 2,
+    name: "In progres",
+    enumValue: 1,
+    items: [
+    ],
+  },
+  {
+    id: 3,
+    name: "Complete",
+    enumValue: 2,
+    items: [
+    ],
+  },
+]);
 
-  function deleteItem(board, item) {
-    board.items = board.items.filter((i) => i !== item);
-    //enviar al back para eliminar
+watchEffect(async () => {
+  let responseAssignment = await getAssignmentByProjectId(idProject.value);
+  console.log("Tareas recibidas del proyecto:", responseAssignment);
+  assignments.value = responseAssignment;
+  console.log("Id porjecto:",idProject.value)
+  console.log("nombre porjecto:",nameProject.value)
+});
+
+async function handleNewItem(text) {
+  let newAssignment = {
+    name: text.value,
+    description: "",
+    status: 0,
+    priority: 0,
+    projectId: idProject.value // Usar el idProject del store
+  };
+  // Asegúrate de esperar la respuesta de la API
+  try {
+    let responseAddAssignment = await postAssignment(newAssignment);
+    // console.log("Respuesta de la API:", responseAddAssignment);
+    // Refrescar las tareas después de agregar una nueva
+    let responseAssignment = await getAssignmentByProjectId(idProject.value);
+    assignments.value = responseAssignment;
+  } catch (error) {
+    console.error("Error creando la nueva tarea:", error);
   }
+}
 
-  //-   // function updateItem({ boardId, task }) {
-//-   //   const board = boards.find(b => b.id === boardId);
-//-   //   if (board) {
-//-   //     const index = board.items.findIndex(item => item.id === task.id);
-//-   //     if (index !== -1) {
-//-   //       board.items[index] = task;
-//-   //       // Lógica para actualizar en el backend
-//-   //     }
-//-   //   }
-//-   // }
+function startDrag(evt, board, item) {
+  evt.dataTransfer.setData(
+    "text/plain",
+    JSON.stringify({ boardId: board.id, itemId: item.id })
+  );
+}
 
+function onDrop(evt, dest) {
+  const { boardId, itemId } = JSON.parse(
+    evt.dataTransfer.getData("text/plain")
+  );
+  const originBoard = boards.find((item) => item.id == boardId);
+  const originItem = originBoard.items.find((item) => item.id == itemId);
+  dest.items.push({ ...originItem });
+  originBoard.items = originBoard.items.filter((item) => item != originItem);
+}
 
-  function handleNewItem(text, board) {
-    //mirar como creo en la base de datos la task
-    board.items.push({
-      id: crypto.randomUUID(),
-      priority:"low",
-      title: text.value,
-    });
-  }
+function filteredAssignments(board) {
+  console.log('Filtrando tareas para el board:', board.name);
+  return assignments.value.filter((assignment) => {
+    console.log('Tarea status:', assignment.status, 'Enum del board:', board.enumValue, board.id);
+    return assignment.status === board.enumValue;
+  });
+}
 
-  function startDrag(evt, board, item) {
-    evt.dataTransfer.setData(
-      "text/plain",
-      JSON.stringify({ boardId: board.id, itemId: item.id })
-    );
-  }
+// function deleteItem(board, item) {
+//   board.items = board.items.filter((i) => i !== item);
+// }
 
-  function onDrop(evt, dest) {
-    const { boardId, itemId } = JSON.parse(
-      evt.dataTransfer.getData("text/plain")
-    );
-    const originBoard = boards.find((item) => item.id == boardId);
-    const originItem = originBoard.items.find((item) => item.id == itemId);
-    dest.items.push({ ...originItem });
-    originBoard.items = originBoard.items.filter((item) => item != originItem);
-  }
-  </script>
-
-
-
+</script>
 
 <style lang="scss" scoped>
 .dashboard-table {
   width: 100%;
   text-align: center;
+
   .board-container {
     // border: 1px solid tomato;
     display: flex;
@@ -117,7 +122,7 @@ let boards = reactive([
     gap: 1rem;
     position: relative;
     margin: 0 2.5rem;
-  
+
     .board {
       color: rgba(255, 255, 255, 0.893);
       // color: black;
@@ -133,17 +138,16 @@ let boards = reactive([
       padding: 1rem;
       font-size: 2rem;
       overflow: auto;
-      
     }
-  
+
     @media (max-width: 768px) {
-    margin: 0 0 0 4rem;
-    justify-content: center;
-  }
+      margin: 0 0 0 4rem;
+      justify-content: center;
+    }
   }
 }
 
 .title {
-  margin:2vh;
+  margin: 2vh;
 }
 </style>

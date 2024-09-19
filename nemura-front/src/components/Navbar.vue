@@ -37,60 +37,32 @@ const userStore = useUserStore()
 const router = useRouter();
 const route = useRoute();
 
-const { getProject, postProject, putProject, deleteProject } = projectsApi();
+const { getProject, postProject, putProject, deleteProject, getProjectsByIdUser } = projectsApi();
 
 onMounted(async () => {
-  // let responseProjects = await getProject();
-  // idUser = userStore.user.id;
-  // projects.value = responseProjects;
-  // console.log(projects)
-  // console.log(idUser)
-  // let data = userStore.user;
-  // console.log(data)
-  let responseProjects = await getProject();
-  const { id } = userStore.user; // Destructure user ID
+  idUser = userStore.user.id;
+  let responseProjects = await getProjectsByIdUser(idUser);
   projects.value = responseProjects;
-  console.log(projects)
-  console.log(id)
+  console.log("porjectos del user:",projects.value);
 })
 
 let idUser= ref();
 const projects = ref([])
-// console.log(projects)
-// console.log(idUser)
-
-// const isExpanded = ref(localStorage.getItem("is_expanded") === "true");
-
-// const ToggleMenu = () => {
-//     isExpanded.value =!isExpanded.value;
-//     localStorage.setItem("is_expanded", isExpanded.value);
-// }
-
-
-// const isExpanded = ref(localStorage.getItem("is_expanded") === "true");
 
 const ToggleMenu = () => {
   userStore.isExpanded = !userStore.isExpanded;
 }
 
 const projectSelected = (id, name) => {
-  // console.log(id)
   router.push({ path: "/dashboard/" + `${name}` });
   userStore.idProject = id;
-  userStore.nameProject=name;
-  console.log(userStore.idProject)
-  console.log(userStore.nameProject)
-
+  userStore.nameProject= name;
 }
-
-// const goProject = (project) => {
-//     router.push({ path: "/dashboard/" + `${project}` });
-// }
-
 
 const logout = async () => {
     console.log(userStore.user)
     userStore.user = null;
+    userStore.user = "";
     console.log(userStore.user)
     location.replace("/");
 };
@@ -115,6 +87,7 @@ aside {
 
   .logo {
     margin-bottom: 1rem;
+    cursor: pointer;
 
     img {
       width: 2rem;
@@ -178,6 +151,13 @@ aside {
         color: var(--color-white-soft);
         transition: 0.3s ease-out;
       }
+      &:hover {
+        .material-icons {
+          color: var(--color-verde);
+          transform: translateX(0.5rem);
+
+      }
+      }
 
       .text {
         color: var(--color-white-soft);
@@ -217,9 +197,9 @@ aside {
     }
     .button {
       .material-icons {
-
         margin-right: 1rem;
       }
+     
     }
   }
 

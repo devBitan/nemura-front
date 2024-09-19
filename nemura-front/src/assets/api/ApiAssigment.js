@@ -1,9 +1,9 @@
 import { httpService } from "@/libs/https";
 
-const {httpGet, httpPost, httpDelete, httpPut } = httpService();
+const {httpGet, httpPost, httpDelete, httpPut, httpGetHeaders, httpPostHeaders } = httpService();
 
 // const apiUrl = "api/Catalogue/";
-const apiUrl = "/";
+const apiUrl = "v1/";
 
 export function assignmentApi() {
 
@@ -12,8 +12,13 @@ export function assignmentApi() {
     return response;
   }
 
-  const postAssignment = async (assignment) => {
-    let response = await httpPost(apiUrl + "crearassignment", assignment);
+  async function getAssignmentByProjectId(id) {
+    let response = await httpGetHeaders(apiUrl + "assignments/ByProjectId/" + id);
+    return response;
+  }
+
+  const postAssignment = async (data) => {
+    let response = await httpPostHeaders(apiUrl + "assignments", data);
     return response;
   };
 
@@ -27,5 +32,5 @@ export function assignmentApi() {
     // return response;
   };
 
-  return { getAssignment, postAssignment, putAssignment, deleteAssignment };
+  return { getAssignment, postAssignment, putAssignment, deleteAssignment, getAssignmentByProjectId };
 }

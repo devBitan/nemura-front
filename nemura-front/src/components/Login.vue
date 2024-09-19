@@ -98,7 +98,6 @@
     // enviando información a la store
     userStore.setUser(response);
     userStore.setToken(response.token)
-    console.log(response)
     router.push("/dashboard");
     } else {
       alert("usuario o pass incorrecto.");
