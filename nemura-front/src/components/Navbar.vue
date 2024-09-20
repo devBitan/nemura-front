@@ -10,11 +10,15 @@
 
         </div>
         <h3>Menu</h3>
+        <form action="" @submit.prevent="newProject(newProjectName)">
+          <input class="inputProject" type="text" placeholder="New Project" v-model="newProjectName" >
+        </form>
         <div class="menu" v-for="project in projects" :key="project.name">
             <div class="button" @click="projectSelected(project.id, project.name)" >
                 <span class="material-icons">home</span>
                 <span class="text" >{{ project.name }}</span>
             </div>
+            <button class="material-icons" @click="projectDelete(project.id)">delete</button>
 
         </div>
         <div class="flex"></div>
@@ -37,7 +41,7 @@ const userStore = useUserStore()
 const router = useRouter();
 const route = useRoute();
 
-const { getProject, postProject, putProject, deleteProject, getProjectsByIdUser } = projectsApi();
+const { getProject, postProject, patchProject, deleteProject, getProjectsByIdUser } = projectsApi();
 
 onMounted(async () => {
   idUser = userStore.user.id;
@@ -48,6 +52,7 @@ onMounted(async () => {
 
 let idUser= ref();
 const projects = ref([])
+let newProjectName = ref("")
 
 const ToggleMenu = () => {
   userStore.isExpanded = !userStore.isExpanded;
@@ -66,6 +71,40 @@ const logout = async () => {
     console.log(userStore.user)
     location.replace("/");
 };
+
+const newProject = async () => {
+  let projectNew = {
+    name: newProjectName.value,
+    userId: idUser
+  }
+  console.log(projectNew)
+  try {
+    let response = await postProject(projectNew);
+    console.log("Proyecto creado", response);
+    let responseProjects = await getProjectsByIdUser(idUser);
+    projects.value = responseProjects;
+    newProjectName.value = "";
+  } catch (error) {
+    console.error("Error al crear proyecto", error);
+    
+  }
+}
+
+async function projectDelete(projectId) {
+    console.log(projectId);
+    try {
+      let response = await deleteProject(projectId)
+      console.log(response);
+      if(response){
+
+        // Refresca la lista de projectos después de la actualización
+        let responseProjects = await getProjectsByIdUser(idUser);
+        projects.value = responseProjects;
+      }
+    } catch (error) {
+      console.error("Error eliminando la tarea:", error);
+    }
+}
 </script>
 
 <<style lang="scss" scoped>
@@ -137,7 +176,23 @@ aside {
     text-transform: uppercase;
   }
   .menu {
-    margin: 0 -1rem;
+    margin: 0 -.9rem;
+    display: flex;
+    padding: 5px;
+    justify-content: space-between;
+    button {
+      border: none;
+      padding: 0 5px;
+      border-radius: 9px;
+      margin: 6px 0;
+      &:hover {
+          color: var(--color-azulito);
+          transform:scale(1rem);
+          background-color: var(--color-naranja);
+
+      }
+
+    }
 
     .button {
       display: flex;
@@ -208,6 +263,13 @@ aside {
     position: fixed;
     z-index: 99;
   }
+}
+
+.inputProject {
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  margin-bottom: 10px;
 }
     
 </style>>

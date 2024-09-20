@@ -223,13 +223,31 @@ export function httpService() {
     return response.data;
   };
 
-  const httpPutHeaders = async (url, data) => {
+  const httpPatchHeaders = async (url, data) => {
     const token = await getTokenFromStore(); 
     let headers = {
       Authorization: `Bearer ${token}`,
     };
     let response = await http.patch(url, data, { headers });
     return response.data;
+  };
+
+  const httpPutHeaders = async (url, data) => {
+    const token = await getTokenFromStore(); 
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    let response = await http.put(url, data, { headers });
+    return response.data;
+  };
+
+  const httpDeletetHeaders = async (url) => {
+    const token = await getTokenFromStore(); 
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    let response = await http.delete(url, { headers });
+    return response;
   };
 
   return {
@@ -239,6 +257,8 @@ export function httpService() {
     httpPut,
     httpGetHeaders,
     httpPostHeaders,
-    httpPutHeaders
+    httpPutHeaders,
+    httpDeletetHeaders,
+    httpPatchHeaders
   };
 }

@@ -1,18 +1,18 @@
 <template>
   <div class="task-container" @click="editSelectedAssignment(item)">
-    <p class="task-container-title">{{ item?.name }}</p>
+    <p class="task-container-title">{{ item.name }}</p>
     <div class="task-container-items">
       <div class="task-container-items-id"> <span>id: </span> {{ item?.id }}</div>
       <div class="task-container-items-priority"> {{ item?.priority }}</div>
     </div>
   </div>
   <div class="modal" v-if="showModal">
-    <form @submit.prevent="saveEditAssignment">
+    <form @submit.prevent>
       <div class="modal-container" >
         <div class="modal-container-title">
           <!-- <h3>{{ item.title }}</h3> -->
            <input type="text" v-model="selectedAssignment.name">
-          <p>id: {{ item.id }}</p>
+          <p>id: {{ selectedAssignment.id }}</p>
         </div>
         <div class="modal-container-priority">
           <p>Priority</p>
@@ -25,21 +25,21 @@
       <textarea placeholder="escribe " class="modal-container-textarea" v-model="selectedAssignment.description"></textarea>
       <div class="modal-container-btns">
         <button @click="changeModal()" class="close">Close</button>
-        <button type="submit" class="save">Save</button>
-        <button @click="emitDelete" class="delete">Delete</button>
+        <button  @click="updateTask()" class="save">Save</button>
+        <button @click="emitDelete(item.id)" class="delete">Delete</button>
       </div>
     </form>
   </div>
-  <!-- <div v-model="showModal"></div> -->
 </template>
 
 <script setup>
 import { defineProps, defineEmits } from 'vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { assignmentApi } from '@/assets/api/ApiAssigment';
-
-const { getAssignment, postAssignment, putAssignment, deleteAssignment } = assignmentApi
-
+import { useUserStore } from '@/stores/user';
+const userStore = useUserStore();
+const {putAssignment, getAssignmentByProjectId} = assignmentApi()
+const idProject = computed(() => userStore.idProject);
 const props = defineProps({
   item: {
     type: Object,
@@ -50,9 +50,15 @@ const props = defineProps({
     required: true
   }
 });
-
 let showModal = ref(false);
 
+let selectedAssignment = ref({
+  name: "",
+  description: "",
+  status: "",
+  priority: "",
+});
+let idTask = ref(0)
 
 const changeModal = () => {
   showModal.value = !showModal.value;
@@ -62,47 +68,28 @@ const changeModal = () => {
 const emit = defineEmits(['delete-task', 'update-task']); // Definir los eventos que se emitirán
 
 const emitDelete = () => {
-  emit('delete-task', { boardId: props.boardId, taskId: props.item.id });
+  emit('delete-task', props.item.id );
+  changeModal()
 };
 
-const emitUpdate = () => {
-  emit('update-task', { boardId: props.boardId, taskId: props.item.id });
-}
-const selectedAssignment = ref({
-  id: "",
-  name: "",
-  description: "",
-  status: "",
-  priority: "",
-  // idProject: "",
-  // idUser: ""
-});
 
-const editSelectedAssignment = (assignment) => {
-  selectedAssignment.value = {
-    id: assignment.id,
-    name: assignment.name,
-    description: assignment.description,
-    status: assignment.status,
-    priority: assignment.priority,
-    idProject: assignment.idProject,
-  };
-  showModal.value = true;
+async function editSelectedAssignment(item) {
+  selectedAssignment.value.name = item.name;
+  selectedAssignment.value.description = item.description;
+  selectedAssignment.value.status = item.status;
+  selectedAssignment.value.priority = item.priority;
+  idTask.value = item.id;
   console.log(selectedAssignment.value)
-};
+  changeModal();
+}
 
-const updateAssignment = async () => {
-  // cargar datos actualizados sin actualizar la pagina
-  let response = await getColors();// mirar como obtengo las task
-  catalogueColors.value = response;
-};
 
-const saveEditAssignment = async () => {
-  let response = await putAssignment(selectedAssignment.id.value, selectedAssignment.value);
-  showModal.value = false;
-  await updateColors(); // cargar datos nuevo actualizados
-  alert("assignment updated successfully");
-};
+const updateTask = () => {
+  emit('update-task',idTask.value, selectedAssignment.value);
+  changeModal()
+}
+
+
 </script>
 
 

@@ -1,6 +1,8 @@
 import { httpService } from "@/libs/https";
 
-const {httpGet, httpPost, httpDelete, httpPut, httpGetHeaders, httpPostHeaders, httpPutHeaders } = httpService();
+const {httpGet, httpPost, httpDelete, httpPut, httpGetHeaders, httpPostHeaders, httpPutHeaders, httpDeletetHeaders, 
+  httpPatchHeaders
+ } = httpService();
 
 // const apiUrl = "api/Catalogue/";
 const apiUrl = "v1/";
@@ -22,15 +24,23 @@ export function assignmentApi() {
     return response;
   };
 
+  const patchAssignment = async (id, data) => {
+    let response = await httpPatchHeaders(apiUrl + "assignments/status/" + id, data);
+    return response; // organizar este 
+  };
   const putAssignment = async (id, data) => {
-    let response = await httpPutHeaders(apiUrl + "assignments/status/" + id, data);
+    let response = await httpPutHeaders(apiUrl + "assignments/" + id, data);
     return response; // organizar este 
   };
 
-  const deleteAssignment = async (id, data) => {
-    // let response = await httpPutHeaders(apiUrl + "deleteassignment/" + id, data);
-    // return response;
+  // const deleteAssignment = async (id) => {
+  //   let response = await httpDeletetHeaders(apiUrl + "AssignmentsDelete/" + id);
+  //   return response;
+  // };
+  const deleteAssignment = async (id) => {
+    let response = await httpDeletetHeaders("AssignmentsDelete/" + id);
+    return response;
   };
 
-  return { getAssignment, postAssignment, putAssignment, deleteAssignment, getAssignmentByProjectId };
+  return { getAssignment, postAssignment, putAssignment, deleteAssignment, getAssignmentByProjectId,patchAssignment };
 }

@@ -1,6 +1,6 @@
 import { httpService } from "@/libs/https";
 
-const {httpGet, httpPost, httpDelete, httpPut, httpGetHeaders } = httpService();
+const {httpGet, httpPost, httpDelete, httpPut,httpPatchHeaders, httpGetHeaders, httpPostHeaders, httpPutHeaders, httpDeletetHeaders } = httpService();
 
 // const apiUrl = "api/Catalogue/";
 const apiUrl = "v1/";
@@ -15,24 +15,23 @@ export function projectsApi() {
 
   async function getProjectsByIdUser(id) {
     let response = await httpGetHeaders(apiUrl + "projects/ByUserId/"+ id);
-   
     return response;
   }
 
-  const postProject = async (assignment) => {
-    let response = await httpPost(apiUrl + "projects", project);
+  const postProject = async (project) => {
+    let response = await httpPostHeaders(apiUrl + "projects", project);
     return response;
   };
 
-  const putProject = async (id, data) => {
-    let response = await httpPut(apiUrl + "projects/" + id, data);
+  const patchProject = async (id, data) => {
+    let response = await httpPatchHeaders(apiUrl + "projects/" + id, data);
     return response; // organizar este 
   };
 
-  const deleteProject = async (id, data) => {
-    // let response = await httpPutHeaders(apiUrl + "deleteassignment/" + id, data);
-    // return response;
+  const deleteProject = async (id) => {
+    let response = await httpDeletetHeaders(apiUrl + "projects/" + id);
+    return response;
   };
 
-  return { getProject, postProject, putProject, deleteProject, getProjectsByIdUser };
+  return { getProject, postProject, patchProject, deleteProject, getProjectsByIdUser };
 }
