@@ -1,6 +1,6 @@
 import { httpService } from "@/libs/https";
 
-const {httpGet, httpPost, httpDelete, httpPut, httpGetHeaders, httpPostHeaders } = httpService();
+const {httpGet, httpPost, httpDelete, httpPut, httpGetHeaders, httpPostHeaders, httpPutHeaders } = httpService();
 
 // const apiUrl = "api/Catalogue/";
 const apiUrl = "v1/";
@@ -23,7 +23,7 @@ export function assignmentApi() {
   };
 
   const putAssignment = async (id, data) => {
-    let response = await httpPutHeaders(apiUrl + "updateassignment/" + id, data);
+    let response = await httpPutHeaders(apiUrl + "assignments/status/" + id, data);
     return response; // organizar este 
   };
 

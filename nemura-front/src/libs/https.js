@@ -223,12 +223,22 @@ export function httpService() {
     return response.data;
   };
 
+  const httpPutHeaders = async (url, data) => {
+    const token = await getTokenFromStore(); 
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    let response = await http.patch(url, data, { headers });
+    return response.data;
+  };
+
   return {
     httpGet,
     httpPost,
     httpDelete,
     httpPut,
     httpGetHeaders,
-    httpPostHeaders
+    httpPostHeaders,
+    httpPutHeaders
   };
 }
