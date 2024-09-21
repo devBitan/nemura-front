@@ -2,30 +2,40 @@
   <div class="task-container" @click="editSelectedAssignment(item)">
     <p class="task-container-title">{{ item.name }}</p>
     <div class="task-container-items">
-      <div class="task-container-items-id"> <span>id: </span> {{ item?.id }}</div>
-      <div class="task-container-items-priority"> {{ item?.priority }}</div>
+      <div class="task-container-items-id"> <span>id: </span> {{ item.id }}</div>
+      <div class="task-container-items-priority" :class="{
+        'priority-low': item.priority === 0,
+        'priority-medium': item.priority === 1,
+        'priority-high': item.priority === 2
+      }"> {{ priorityMapping[item?.priority] }}</div>
     </div>
   </div>
   <div class="modal" v-if="showModal">
     <form @submit.prevent>
-      <div class="modal-container" >
+      <div class="modal-container">
         <div class="modal-container-title">
-          <!-- <h3>{{ item.title }}</h3> -->
-           <input type="text" v-model="selectedAssignment.name">
-          <p>id: {{ selectedAssignment.id }}</p>
+          <input type="text" v-model="selectedAssignment.name">
+          <p>id: {{ idTask }}</p>
         </div>
         <div class="modal-container-priority">
           <p>Priority</p>
-          <button>{{ selectedAssignment.priority }}</button>
-          <button>{{ selectedAssignment.priority }}</button>
-          <button>{{ selectedAssignment.priority }}</button>
+          <button @click="setPriority(0)" :class="{ 'selected-priority-low': selectedAssignment.priority === 0 }">
+            {{ priorityMapping[0] }}
+          </button>
+          <button @click="setPriority(1)" :class="{ 'selected-priority-medium': selectedAssignment.priority === 1 }">
+            {{ priorityMapping[1] }}
+          </button>
+          <button @click="setPriority(2)" :class="{ 'selected-priority-high': selectedAssignment.priority === 2 }">
+            {{ priorityMapping[2] }}
+          </button>
         </div>
       </div>
 
-      <textarea placeholder="escribe " class="modal-container-textarea" v-model="selectedAssignment.description"></textarea>
+      <textarea placeholder="escribe " class="modal-container-textarea"
+        v-model="selectedAssignment.description"></textarea>
       <div class="modal-container-btns">
         <button @click="changeModal()" class="close">Close</button>
-        <button  @click="updateTask()" class="save">Save</button>
+        <button @click="updateTask()" class="save">Save</button>
         <button @click="emitDelete(item.id)" class="delete">Delete</button>
       </div>
     </form>
@@ -37,9 +47,18 @@ import { defineProps, defineEmits } from 'vue';
 import { ref, computed } from 'vue';
 import { assignmentApi } from '@/assets/api/ApiAssigment';
 import { useUserStore } from '@/stores/user';
+
 const userStore = useUserStore();
-const {putAssignment, getAssignmentByProjectId} = assignmentApi()
+const { putAssignment, getAssignmentByProjectId } = assignmentApi()
 const idProject = computed(() => userStore.idProject);
+let showModal = ref(false);
+let idTask = ref(0)
+
+const priorityMapping = {
+  0: 'Low',
+  1: 'Medium',
+  2: 'High'
+};
 const props = defineProps({
   item: {
     type: Object,
@@ -50,7 +69,6 @@ const props = defineProps({
     required: true
   }
 });
-let showModal = ref(false);
 
 let selectedAssignment = ref({
   name: "",
@@ -58,7 +76,6 @@ let selectedAssignment = ref({
   status: "",
   priority: "",
 });
-let idTask = ref(0)
 
 const changeModal = () => {
   showModal.value = !showModal.value;
@@ -68,10 +85,9 @@ const changeModal = () => {
 const emit = defineEmits(['delete-task', 'update-task']); // Definir los eventos que se emitirán
 
 const emitDelete = () => {
-  emit('delete-task', props.item.id );
+  emit('delete-task', props.item.id);
   changeModal()
 };
-
 
 async function editSelectedAssignment(item) {
   selectedAssignment.value.name = item.name;
@@ -83,13 +99,13 @@ async function editSelectedAssignment(item) {
   changeModal();
 }
 
-
 const updateTask = () => {
-  emit('update-task',idTask.value, selectedAssignment.value);
+  emit('update-task', idTask.value, selectedAssignment.value);
   changeModal()
 }
-
-
+function setPriority(priorityValue) {
+  selectedAssignment.value.priority = priorityValue;
+}
 </script>
 
 
@@ -144,6 +160,18 @@ const updateTask = () => {
       padding: 0 17px;
       color: black;
       font-size: 17px;
+
+      &.priority-low {
+        background-color: var(--color-verde); // Verde para prioridad baja
+      }
+
+      &.priority-medium {
+        background-color: var(--color-amarillo); // Amarillo para prioridad media
+      }
+
+      &.priority-high {
+        background-color: var(--color-naranja); // Naranja para prioridad alta
+      }
     }
   }
 }
@@ -190,6 +218,7 @@ const updateTask = () => {
 
     .modal-container-title {
       text-align: start;
+
       input {
         padding: 7px;
         border-radius: 9px;
@@ -210,13 +239,34 @@ const updateTask = () => {
         box-shadow: 0 0 10px rgba(8, 8, 8, 0.514);
         margin: 5px;
         cursor: pointer;
+        background-color: lightgray;
+        color: black;
+
+        // Prioridad baja
+        &.selected-priority-low {
+          background-color: var(--color-verde); // Verde claro
+          color: black;
+        }
+
+        // Prioridad media
+        &.selected-priority-medium {
+          background-color: var(--color-amarillo); // Amarillo
+          color: black;
+        }
+
+        // Prioridad alta
+        &.selected-priority-high {
+          background-color: var(--color-naranja); // Naranja o rojo fuerte
+          color: white;
+        }
       }
 
     }
-    
+
     @media (max-width: 768px) {
       flex-direction: column;
-      .modal-container-priority{
+
+      .modal-container-priority {
         flex-wrap: nowrap;
       }
     }
@@ -234,6 +284,7 @@ const updateTask = () => {
   .modal-container-btns {
     display: flex;
     justify-content: center;
+
     button {
       padding: 5px 13px;
       border-radius: 10px;

@@ -25,7 +25,7 @@ export function projectsApi() {
 
   const patchProject = async (id, data) => {
     let response = await httpPatchHeaders(apiUrl + "projects/" + id, data);
-    return response; // organizar este 
+    return response; 
   };
 
   const deleteProject = async (id) => {

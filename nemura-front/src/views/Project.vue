@@ -19,9 +19,11 @@
   import Task from '@/components/Task.vue';
   import InputNew from "./InputNew.vue";
   import { assignmentApi } from "@/assets/api/ApiAssigment";
+  import { projectsApi } from "@/assets/api/ApiProject";
   import { useUserStore } from "@/stores/user";
   
   const userStore = useUserStore();
+
   const { getAssignment, postAssignment, putAssignment, deleteAssignment, getAssignmentByProjectId,patchAssignment } = assignmentApi();
   const idProject = computed(() => userStore.idProject);
   const nameProject = computed(() => userStore.nameProject);
@@ -29,7 +31,7 @@
   let boards = reactive([
     {
       id: 1,
-      name: "To Dos",
+      name: "To Do",
       enumValue: 0,
       items: [],
     },
@@ -131,7 +133,6 @@ async function updateItem(id,updatedAssignment) {
   }
 }
 
-  
 </script>
 
 <style lang="scss" scoped>
