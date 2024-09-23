@@ -3,7 +3,7 @@ import { httpService } from "@/libs/https";
 
 const { httpPost } = httpService();
 
-const apiUrl = "v1/users/"; // como van a ser los endopints
+const apiUrl = "v1/auths/"; // como van a ser los endopints
 
 export function authRegisterApi() {
   

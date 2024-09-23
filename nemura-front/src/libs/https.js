@@ -11,7 +11,7 @@ async function getTokenFromStore() {
 // Servicio HTTP con axios
 export function httpService() {
   let http = axios.create({
-    baseURL: "https://nemura.azurewebsites/api/",
+    baseURL: "https://nemura.azurewebsites.net/api/",
   });
 
   // Verificar si hay un token

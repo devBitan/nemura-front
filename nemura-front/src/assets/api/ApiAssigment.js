@@ -33,12 +33,9 @@ export function assignmentApi() {
     return response; // organizar este 
   };
 
-  // const deleteAssignment = async (id) => {
-  //   let response = await httpDeletetHeaders(apiUrl + "AssignmentsDelete/" + id);
-  //   return response;
-  // };
   const deleteAssignment = async (id) => {
-    let response = await httpDeletetHeaders("assignments/" + id);
+    console.log("el id que envio para eliminar es", id)
+    let response = await httpDeletetHeaders(apiUrl + "assignments/" + id);
     return response;
   };
 

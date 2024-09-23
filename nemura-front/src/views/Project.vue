@@ -105,11 +105,11 @@
   }
   
   async function deleteItem(item) {
-    console.log(item);
+    console.log("el id es:", item);
     // board.items = board.items.filter((i) => i !== item);
     try {
       let response = await deleteAssignment(item)
-      console.log(response);
+      console.log("la respuesta de eliminar", response);
       if(response){
 
         // Refresca la lista de tareas después de la actualización
