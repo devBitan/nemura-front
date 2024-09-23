@@ -1,29 +1,20 @@
 # nemura-front
 
-This template should help get you started developing with Vue 3 in Vite.
+## Tecnologies
+- Framework: vue3
+- Language: javascript
+- Http service: axios
+- Persistence: pinia
+- Routes: vue-router
 
-## Recommended IDE Setup
+## Start the project
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+clone the porject
+- git clone https://github.com/devBitan/nemura-front.git
+check the route
+  -yourpc/nemura-front/nemura-front
+install dependencies
+  - npm i or npm install
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
+## Run the project
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```

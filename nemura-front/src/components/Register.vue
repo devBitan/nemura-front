@@ -1,5 +1,6 @@
 <template lang="pug">
 .login-seccion
+  <h4 class="login-text">Manage your day, a project, an idea.</h4>
   form(
           autocomplete="off",
           @submit.prevent="validate()")
@@ -13,13 +14,13 @@
         type="text",
         placeholder="your last name",
         v-model="userCreate.lastName",
-        v-show="userCreate.name != '' && userCreate.name.length > 4",
+        v-show="userCreate.name != '' && userCreate.name.length >= 1",
     )
     input(
         type="email",
         placeholder="your email",
         v-model="userCreate.email", 
-        v-show="userCreate.lastName != '' && userCreate.lastName.length > 4",
+        v-show="userCreate.lastName != '' && userCreate.lastName.length > 1",
         @change="checkEmail",
     )
     input(
@@ -32,14 +33,14 @@
         type="password",
         placeholder="your pasword",
         v-model="userCreate.password",
-        v-show="userCreate.nickName != '' && userCreate.nickName.length >= 5",
+        v-show="userCreate.nickName != '' && userCreate.nickName.length >= 3",
         @change="checkPassword",
     )
     input(
         type="password",
         placeholder="Repeat your password",
         v-model="passConfirm",
-        v-show="userCreate.password != '' && userCreate.password.length > 8",
+        v-show="userCreate.password != '' && userCreate.password.length >= 8",
         @change="ConfirmPass", 
     )
     div
@@ -141,6 +142,12 @@ const validate = async () => {
     justify-content: center;
     align-items: center;      
     background-color: var(--color-blue);
+    flex-direction: column;
+    .login-text{
+          font-size: 1rem;
+          color: var(--color-white-soft);
+          margin-top: 1rem;
+        }
 
 
     form {
@@ -171,13 +178,17 @@ const validate = async () => {
             width: 50%;
             padding: 10px;
             border-radius: 5px;
-            background-color: #333;
+            background-color: var(--color-morado);
             color: #fff;
             cursor: pointer;
             margin: 0 auto;
         }
         strong {
                 cursor: pointer;
+                &:hover {
+                    text-decoration: underline;
+                    color: var(--color-azulito);
+                }
             }
     }
 

@@ -1,5 +1,6 @@
 <template lang="pug">
   .login-seccion
+    <h4 class="login-text">Manage your day, a project, an idea.</h4>
     form(
             autocomplete="off",
             @submit.prevent="validate()")
@@ -114,9 +115,15 @@
         //  display: flex;
         width: 100vw;
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         background-color: var(--color-blue);
+        flex-direction: column;
+        .login-text{
+          font-size: 1.3rem;
+          color: var(--color-white-soft);
+          margin-top: 5rem;
+        }
         form {
             // border: 1px solid black;
             background-color: #fff;
@@ -142,13 +149,18 @@
                 width: 50%;
                 padding: 10px;
                 border-radius: 5px;
-                background-color: #333;
+                background-color: var(--color-morado);
                 color: #fff;
-                cursor: pointer;
+                cursor: pointer !important; 
                 margin: 0 auto;
             }
             strong {
                 cursor: pointer;
+                &:hover {
+                    text-decoration: underline;
+                    color: var(--color-azulito);
+                    // transform: translateX(0.5rem);
+                }
             }
         }
     }

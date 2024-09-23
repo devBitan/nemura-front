@@ -1,7 +1,8 @@
 <template>
     <aside :class="{'is-expanded': userStore.isExpanded}">
-        <div class="logo" >
-            <img src="../assets/img/logoNemura.png" alt="" @click="$router.push({ path: '/dashboard' })">
+        <div class="logo" @click="$router.push({ path: '/dashboard' })" >
+            <img src="../assets/img/logoNemura.png" alt="" >
+            <p> Hi! {{ nameUser }}</p>
         </div>
         <div class="menu-toggle-wrap">
             <div class="menu-toggle" @click="ToggleMenu">
@@ -9,13 +10,14 @@
             </div>
 
         </div>
-        <h3>Menu</h3>
-        <form action="" @submit.prevent="newProject(newProjectName)">
+        <h3>Projects</h3>
+        <form action="" @submit.prevent="newProject(newProjectName)" @click="userStore.isExpanded = true" class="formProject">
           <input class="inputProject" type="text" placeholder="New Project" v-model="newProjectName" >
+          <span class="material-icons">add_circle</span>
         </form>
         <div class="menu" v-for="project in projects" :key="project.name">
             <div class="button" @click="projectSelected(project.id, project.name)" >
-                <span class="material-icons">home</span>
+                <span class="material-icons">spa</span>
                 <span class="text" >{{ project.name }}</span>
             </div>
             <button class="material-icons" @click="projectDelete(project.id)">delete</button>
@@ -32,7 +34,7 @@
     </aside>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRouter, useRoute } from "vue-router";
 import { projectsApi } from '@/assets/api/ApiProject';
 import { useUserStore } from '@/stores/user';
@@ -42,15 +44,17 @@ const router = useRouter();
 const route = useRoute();
 
 const { getProject, postProject, patchProject, deleteProject, getProjectsByIdUser } = projectsApi();
-
+const nameUser = computed(() => userStore.user.name);
 onMounted(async () => {
   idUser = userStore.user.id;
+  // nameUser = userStore.user.name;
   let responseProjects = await getProjectsByIdUser(idUser);
   projects.value = responseProjects;
   console.log("porjectos del user:",projects.value);
 })
 
 let idUser= ref();
+// let nameUser = ref();
 const projects = ref([])
 let newProjectName = ref("")
 
@@ -126,10 +130,16 @@ aside {
 
   .logo {
     margin-bottom: 1rem;
-    cursor: pointer;
-
+    display: flex;
+    // justify-content: center;
+    // flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    
     img {
-      width: 2rem;
+      cursor: pointer;
+      width: 2.5rem;
+      filter: invert(1);
     }
 
   }
@@ -139,9 +149,10 @@ aside {
     justify-content: flex-end;
     margin-bottom: 1rem;
 
-    position: relative;
-    top: 0;
+    // position: relative;
+    top: 1rem;
     transition: 0.2s ease-out;
+    // margin-top: 1rem;
 
     .menu-toggle {
       transition: 0.2s ease-out;
@@ -180,15 +191,18 @@ aside {
     display: flex;
     padding: 5px;
     justify-content: space-between;
+    cursor: pointer !important;
     button {
       border: none;
       padding: 0 5px;
       border-radius: 9px;
       margin: 6px 0;
+      background-color: var(--color-blue);
+      color:white;
       &:hover {
-          color: var(--color-azulito);
+          color: var(--color-naranja);
           transform:scale(1rem);
-          background-color: var(--color-naranja);
+          background-color: var(--color-azulito);
 
       }
 
@@ -246,7 +260,7 @@ aside {
     }
 
     h3,
-    .button .text {
+    .button .text  {
       opacity: 1;
 
     }
@@ -265,11 +279,17 @@ aside {
   }
 }
 
-.inputProject {
-  padding: 10px;
-  border-radius: 12px;
-  border: none;
-  margin-bottom: 10px;
+.formProject{
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: .2rem;
+  .inputProject {
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    
+  }
 }
     
 </style>>

@@ -141,25 +141,17 @@ function setPriority(priorityValue) {
     margin-top: 2.4rem;
     align-items: center;
 
-    .task-container-items-priority {
-      background-color: #FE654F;
-      border-radius: 8px;
-      padding: 0 17px;
-      color: black;
-      font-size: 17px;
-    }
-
     .task-container-items-id {
       font-size: 17px;
       color: rgba(175, 170, 170, 0.655);
     }
 
     .task-container-items-priority {
-      background-color: #FE654F;
       border-radius: 8px;
-      padding: 0 17px;
-      color: black;
-      font-size: 17px;
+      padding: 4px 7px;
+      color: rgb(58, 55, 55);
+      font-size: 15px;
+      line-height: 1.1em;
 
       &.priority-low {
         background-color: var(--color-verde); // Verde para prioridad baja
@@ -292,7 +284,7 @@ function setPriority(priorityValue) {
       border-style: none;
       color: rgb(48, 46, 46);
       box-shadow: 0 0 10px rgba(8, 8, 8, 0.541);
-      cursor: pointer;
+      cursor: pointer !important;
 
       &.close {
         background-color: var(--color-amarillo);

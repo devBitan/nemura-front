@@ -10,8 +10,11 @@ import Task from '@/components/Task.vue';
   <main class="login">
     <Register />
     <div class="login-image">
+      <div>
+        <h1>Nemura</h1>
+        <span>Simple - practical - efficient.</span>
+      </div>
       <img src="../assets/img/logoNemura.png" alt="logo-Nemura">
-      <h2>Nemura</h2>
     </div>
   </main>
 </template>
