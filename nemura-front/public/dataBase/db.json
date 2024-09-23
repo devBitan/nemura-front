@@ -1,0 +1,150 @@
+{
+    "user":[
+        {
+            "id": 1,
+            "name": "javier",
+            "lastName": "combita",
+            "email": "javier@gmail.com",
+            "nickName": "combita",
+            "password": "Colombia1*"
+        },
+        {
+            "id": 2,
+            "name": "daniel",
+            "lastName": "danielll",
+            "email": "javier@gmail.com",
+            "nickName": "danielito",
+            "password": "Colombia1*"
+        }
+
+    ],
+    "projects":[
+        {
+            "id":1,
+            "name":"Riwi",
+            "idUSer":1
+        },
+        {
+            "id":2,
+            "name":"Codigo R",
+            "idUSer":1
+        },
+        {
+            "id":3,
+            "name":"Nemura",
+            "idUSer":1
+        },
+        {
+            "id":4,
+            "name":"Riwi",
+            "idUSer":1
+        },
+        {
+            "id":5,
+            "name":"Gamifica",
+            "idUSer":2
+        },
+        {
+            "id":6,
+            "name":"prueba2",
+            "idUSer":2
+        },
+        {
+            "id":7,
+            "name":"prueba3",
+            "idUSer":2
+        },
+        {
+            "id":8,
+            "name":"prueba4",
+            "idUSer":2
+        }
+
+    ],
+    "assignments":[
+        {
+
+            "id": 1,
+            "title": "probando ando",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":1
+        },
+        {
+            "id": 2,
+            "title": "ASP .NET",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":1
+          },
+          {
+            "id": 3,
+            "title": "Api Rest",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":1
+          },
+          {
+            "id": 4,
+            "title": "Azure devops",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":1
+          },
+          {
+            "id": 5,
+            "title": "Git flow",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":1
+          },
+          {
+
+            "id": 6,
+            "title": "probando ando2",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":2
+        },
+        {
+            "id": 7,
+            "title": "ASP .NET2",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":2
+          },
+          {
+            "id": 8,
+            "title": "Api Rest2",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":2
+          },
+          {
+            "id": 9,
+            "title": "Azure devops2",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":2
+          },
+          {
+            "id": 10,
+            "title": "Git flow2",
+            "description": "lorem pic",
+            "status": "do to",
+            "priority": "low",
+            "idProject":2
+          }
+
+
+    ]
+}
