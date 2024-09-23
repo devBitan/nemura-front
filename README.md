@@ -61,7 +61,7 @@ Contributions are welcome. Please open an issue or submit a pull request with yo
 >[!NOTE]
 >This project is actively maintained and updated regularly.
 
-##Colaboratos
--github/devBitan
--github/samuDV
+## Colaboratos
+github/devBitan
+github/samuDV
 
